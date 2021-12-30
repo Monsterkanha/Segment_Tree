@@ -26,6 +26,19 @@ int getmin(vector<int>& t, int v , int tl ,int tr, int l , int r){
 }
 
 
+void update(vector<int>& t, vector<int>& a, int v, int tl ,int tr, int pos){
+	if(tl == tr){
+		t[v] = a[tl];
+		return;
+	}
+	int tm = (tl + tr)/2;
+	if(pos <= tm)	update(t,a, 2*v, tl ,tm, pos);
+	else update(t,a, 2*v + 1, tm + 1, tr, pos);
+
+	t[v] = min(t[2*v], t[2*v + 1]);
+}
+
+
 int main() {
 	//code
 	ios::sync_with_stdio(0);
