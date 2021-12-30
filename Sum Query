@@ -1,0 +1,57 @@
+In this we are given range l to r and we have to find out the sum between index from l to r.
+
+#include <bits/stdc++.h>
+using namespace std;
+
+
+void build(vector<int>& t, vector<int>& a, int v, int tl, int tr){
+    if(tl == tr)    t[v] = (a[tl]%5 == 0);
+    else{
+        int tm = tl + (tr - tl)/2;
+        build(t, a, 2*v, tl , tm);
+        build(t, a , 2*v + 1, tm +1, tr);
+        t[v] = t[2*v] + t[2*v + 1];
+    }
+}
+int getSumUtil(vector<int>& st,int si, int ss, int se, int qs, int qe)
+{
+    if (qs <= ss && qe >= se)
+        return st[si];
+  
+    // If segment of this node is outside the given range
+    if (se < qs || ss > qe)
+        return 0;
+ 
+    // If a part of this segment overlaps with the given range
+    int mid = (ss + se)/2;
+    return getSumUtil(st,2*si, ss, mid, qs, qe) +
+        getSumUtil(st,2*si + 1, mid+1, se, qs, qe);
+}
+int main() {
+	//code
+	ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+	int t;
+	cin>>t;
+	while(t--){
+	    int n,q;
+	    cin>>n>>q;
+	    vector<int> t(4*n), a(n);
+	    for(int i= 0;i < n; i++){
+	        cin>>a[i];
+	    }
+	   build(t, a, 1, 0 , n-1);
+		// for(int i = 0; i < 4*n; i++){
+		// 	cout<<t[i]<<" ";
+		// }
+		// cout<<"\n";
+	    while(q--){
+	        int l, r;
+	        cin>>l>>r;
+			// cout<<l<<" "<<r<<endl;
+	        cout<<getSumUtil(t, 1 , 0 , n-1, l-1, r-1)<<"\n";
+	    }
+	}
+	return 0;
+}
